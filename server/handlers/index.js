@@ -1,8 +1,6 @@
 const customer_handler = require("./customer");
 const token_handler = require("./token");
 
-const acceptMethods = ["post", "get", "put", "delete"];
-
 const handler = {
     customer: {
         login: (data, callback) => customer_handler.login(data, callback),
