@@ -1,12 +1,12 @@
-const http = require('http');
-const router = require('./routes/router');
-const config = require('./config/config');
+const http = require("http");
+const router = require("./routes/router");
+const config = require("./config/config");
 
 const server = {
-    init: () => {  
-        //  create http server
-        const httpServer = http.createServer((req, res) => { router(req, res); });    
-        // start the http server
+    init: () => {
+        const httpServer = http.createServer((req, res) => {
+            router(req, res);
+        });
         httpServer.listen(process.env.PORT, () => {
             console.log(`server starts....running @ port: ${process.env.PORT}`);
         });
@@ -14,4 +14,3 @@ const server = {
 };
 
 module.exports = server;
-

@@ -1,6 +1,5 @@
-
-const handler = require('../handlers/index');
-const helper = require('../../utils/helper');
+const handler = require("../handlers/index");
+const helper = require("../../utils/helper");
 
 const routeConfig = {
     customer: {
@@ -19,9 +18,9 @@ const routeConfig = {
 };
 
 const router = (req, res) => {
-    helper.isLoadingStaticResources(req.url.trim()) ? 
-       helper.loadingStaticResouces(req, res) : 
-       helper.loadRequestPayload(req, res, routeConfig);
+    helper.isLoadingStaticResources(req.url.trim())
+        ? helper.loadingStaticResouces(req, res)
+        : helper.loadRequestPayload(req, res, routeConfig);
 };
 
 module.exports = router;

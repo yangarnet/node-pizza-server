@@ -1,9 +1,10 @@
-
-const crypto = require('crypto');
-const url = require('url');
-const fs = require('fs');
-const path = require('path');
-const { StringDecoder } = require('string_decoder');
+const crypto = require("crypto");
+const url = require("url");
+const fs = require("fs");
+const path = require("path");
+const { StringDecoder } = require("string_decoder");
+const https = require("https");
+const querystring = require("querystring");
 
 const helper = {
     parseJsonToObject: str => {
@@ -17,11 +18,11 @@ const helper = {
 
     isValidEmailAddress: email => {
         const emailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        return email.trim().match(emailformat)
+        return email.trim().match(emailformat);
     },
 
     isAllStringType: (...str) => {
-        const result = str.filter(s => typeof(s) === 'string');
+        const result = str.filter(s => typeof s === "string");
         return result.length === str.length;
     },
 
@@ -31,14 +32,16 @@ const helper = {
         return result.length === str.length;
     },
 
-    isValidCustomerData: ({firstname, lastname, email, address}) => {
-        return helper.isAllStringType(firstname, lastname,email, address) 
-               && helper.isAllValidLength(firstname, lastname,email, address) 
-               && helper.isValidEmailAddress(email);
+    isValidCustomerData: ({ firstname, lastname, email, address }) => {
+        return (
+            helper.isAllStringType(firstname, lastname, email, address) &&
+            helper.isAllValidLength(firstname, lastname, email, address) &&
+            helper.isValidEmailAddress(email)
+        );
     },
 
     hash: rawPassword => {
-        if (typeof rawPassword === 'string' && rawPassword.length > 0) {
+        if (typeof rawPassword === "string" && rawPassword.length > 0) {
             const hash = crypto
                 .createHmac("sha256", process.env.SECRET)
                 .update(rawPassword)
@@ -48,7 +51,7 @@ const helper = {
             return false;
         }
     },
-    
+
     createRandomString: len => {
         len = typeof len === "number" && len > 0 ? len : false;
         if (len) {
@@ -79,42 +82,34 @@ const helper = {
     loadingStaticResouces: (req, res) => {
         if (req.url.trim() === "/") {
             fs.readFile(
-                path.join(__dirname, "../public/index.html"), "UTF-8", (err, html) => {
+                path.join(__dirname, "../public/index.html"),
+                "UTF-8",
+                (err, html) => {
                     res.writeHead(200, { "Content-Type": "text/html" });
                     res.end(html);
                 }
             );
-        } else if (req.url.trim().match('list-menu.html')) {
+        } else if (req.url.trim().match("list-menu.html")) {
             fs.readFile(
-                path.join(__dirname, "../public/list-menu.html"), "UTF-8", (err, html) => {
+                path.join(__dirname, "../public/list-menu.html"),
+                "UTF-8",
+                (err, html) => {
                     res.writeHead(200, { "Content-Type": "text/html" });
                     res.end(html);
                 }
             );
         } else if (req.url.match(/.css$/)) {
-            const csspath = path.join(
-                __dirname,
-                "../public/",
-                req.url.trim()
-            );
+            const csspath = path.join(__dirname, "../public/", req.url.trim());
             const cssStream = fs.createReadStream(csspath, "UTF-8");
             res.writeHead(200, { "Content-Type": "text/css" });
             cssStream.pipe(res);
         } else if (req.url.match(/.js$/)) {
-            const jspath = path.join(
-                __dirname,
-                "../public/",
-                req.url.trim()
-            );
+            const jspath = path.join(__dirname, "../public/", req.url.trim());
             const jsStream = fs.createReadStream(jspath, "UTF-8");
             res.writeHead(200, { "Content-Type": "text/plain" });
             jsStream.pipe(res);
         } else if (req.url.match(/.jpg$/)) {
-            const imgPath = path.join(
-                __dirname,
-                "../public/",
-                req.url.trim()
-            );
+            const imgPath = path.join(__dirname, "../public/", req.url.trim());
             const imgStream = fs.createReadStream(imgPath);
             res.writeHead(200, { "Content-Type": "image/jpeg" });
             imgStream.pipe(res);
@@ -132,26 +127,36 @@ const helper = {
         const query = reqUrl.query;
         const path = reqUrl.pathname;
         const trimmedPath = path.replace(/^\/+|\/+$/g, "");
-        const urlParts = trimmedPath.split('/');
-        
+        const urlParts = trimmedPath.split("/");
+
         //get the payload and handle request
         const decoder = new StringDecoder();
-        let buffer = '';
-        req.on('data', data => {
+        let buffer = "";
+        req.on("data", data => {
             buffer += decoder.write(data);
         });
-        req.on('end', input => {
+        req.on("end", input => {
             buffer += decoder.end(input);
             // choose handler
             let targetHandler;
             if (urlParts.length === 1) {
-                targetHandler = routeConfig[trimmedPath] !== undefined ? routeConfig[trimmedPath] : routeConfig.notFound;
+                targetHandler =
+                    routeConfig[trimmedPath] !== undefined
+                        ? routeConfig[trimmedPath]
+                        : routeConfig.notFound;
             } else if (urlParts.length === 2) {
-                targetHandler = routeConfig[urlParts[0]][urlParts[1]] !== undefined ? routeConfig[urlParts[0]][urlParts[1]] : routeConfig.notFound;
+                targetHandler =
+                    routeConfig[urlParts[0]][urlParts[1]] !== undefined
+                        ? routeConfig[urlParts[0]][urlParts[1]]
+                        : routeConfig.notFound;
             } else if (urlParts.length === 3) {
-                targetHandler = routeConfig[urlParts[0]][urlParts[1]][urlParts[2]] !== undefined ? routeConfig[urlParts[0]][urlParts[1]][urlParts[2]] : routeConfig.notFound;
+                targetHandler =
+                    routeConfig[urlParts[0]][urlParts[1]][urlParts[2]] !==
+                    undefined
+                        ? routeConfig[urlParts[0]][urlParts[1]][urlParts[2]]
+                        : routeConfig.notFound;
             }
-            
+
             //build request object
             const data = {
                 path: trimmedPath,
@@ -162,15 +167,72 @@ const helper = {
             };
 
             targetHandler(data, (statusCode, response) => {
-                statusCode = typeof statusCode === 'number' ? statusCode: 400;
-                response = typeof response === 'object' ? response : {};
-                
+                statusCode = typeof statusCode === "number" ? statusCode : 400;
+                response = typeof response === "object" ? response : {};
+
                 res.setHeader("Content-Type", "application/json");
                 res.writeHead(statusCode);
                 res.end(JSON.stringify(response));
                 console.log(`response: ${JSON.stringify(response, null, 4)}`);
             });
         });
+    },
+
+    processPayment: (paymentDetails, cb) => {
+        const options = {
+            method: process.env.METHOD,
+            hostname: process.env.STRIPE_HOSTNAME,
+            path: process.env.STRIPE_PATH,
+            headers: {
+                "Content-Type": process.env.CONTENT_TYPE,
+                Authorization: process.env.PAYMENT_AUTH
+            }
+        };
+        const req = https.request(options, res => {
+            const { statusCode, statusMessage } = res;
+            if (statusCode === 200 || statusMessage === "OK") {
+                cb(true);
+            } else {
+                cb(false);
+            }
+        });
+
+        req.write(
+            querystring.stringify({
+                ...paymentDetails,
+                source: process.env.PAYMENT_TOKEN
+            })
+        );
+        req.end();
+    },
+
+    sendEmail: (email, cb) => {
+        const options = {
+            method: process.env.METHOD,
+            hostname: process.env.MAILGUN_HOST_NAME,
+            path: process.env.MAILGUN_API_PATH,
+            headers: {
+                "Content-Type": process.env.CONTENT_TYPE,
+                Authorization: process.env.MAILGUN_AUTH
+            }
+        };
+
+        const req = https.request(options, res => {
+            const { statusCode, statusMessage } = res;
+            if (statusCode === 200 || statusMessage === "OK") {
+                cb(true);
+            } else {
+                cb(false);
+            }
+        });
+
+        req.write(
+            querystring.stringify({
+                from: process.env.MAINGUN_SANBOX,
+                ...email
+            })
+        );
+        req.end();
     }
 };
 

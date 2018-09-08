@@ -1,9 +1,20 @@
 {
-    "development": {
-        "PORT": 3000,
-        "SECRET": "OJBTY9878yhghfghjqw0987"
-    },
-    "stage": {
-        "PORT": 3002
-    }
+  "development": {
+    "PORT": 3000,
+    "METHOD": "POST",
+    "SECRET": "OJBTY9878yhghfghjqw0987",
+    "CONTENT_TYPE": "application/x-www-form-urlencoded",
+    "PAYMENT_AUTH": "Bearer sk_test_8A3PNHAGCEJvsLtZH2CeqMMq",
+    "PAYMENT_TOKEN": "tok_visa",
+    "STRIPE_HOSTNAME": "api.stripe.com",
+    "STRIPE_PATH": "/v1/charges",
+
+    "MAILGUN_HOST_NAME": "api.mailgun.net",
+    "MAILGUN_API_PATH": "",
+    "MAILGUN_AUTH": "",
+    "MAINGUN_SANBOX": ""
+  },
+  "stage": {
+    "PORT": 3002
+  }
 }
