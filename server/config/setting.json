@@ -1,0 +1,9 @@
+{
+    "development": {
+        "PORT": 3000,
+        "SECRET": "OJBTY9878yhghfghjqw0987"
+    },
+    "stage": {
+        "PORT": 3002
+    }
+}
