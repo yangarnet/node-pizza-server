@@ -1,0 +1,305 @@
+{
+	"info": {
+		"_postman_id": "591a26e7-57d1-4b28-9cc5-85c9115afb9e",
+		"name": "pizza",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "add new user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "token",
+						"value": "fJ8aI68HR7GTJHJ8gVGU"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"firstname\":\"firstname\",\n  \"lastname\":\"last name\",\n  \"email\":\"your_email@gmail.com\",\n  \"password\":\"passw0rd\",\n  \"address\":\"100 main st\"\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/customer/register",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"customer",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updatte token",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\":\"yangarnet@gmail.com\",\n  \"password\":\"passw0rd\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/token?tokenId=77BGGJRJ8gJT67HGgHg7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"token"
+					],
+					"query": [
+						{
+							"key": "tokenId",
+							"value": "77BGGJRJ8gJT67HGgHg7"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "token",
+						"value": "J68J56ITyJHHHJ6GVFHa"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\":\"yangarnet@gmail.com\",\n  \"password\":\"passw0rd\",\n  \"address\":\"103 william st\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/customer/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"customer",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"password\":\"passw0rd\",\n  \"email\":\"your_email@gmail.com\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/customer/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"customer",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete user",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "token",
+						"value": "UGf9VTGHyBgdiyIrGLdV"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\":\"yangarnet@gmail.com\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/customer/cancel",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"customer",
+						"cancel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user logoff",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "tokenId",
+						"value": "J0Ff66Jr9iVH8g7RyR0G"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/customer/logoff",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"customer",
+						"logoff"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list menu",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "8G79BgFH5H77aG8J8gRH"
+					},
+					{
+						"key": "email",
+						"value": "your_email@gmail.com"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\":\"yangarnet@gmail.com\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/customer/listmenu",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"customer",
+						"listmenu"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add pizza order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "J68J56ITyJHHHJ6GVFHa"
+					},
+					{
+						"key": "email",
+						"value": "yangarnet@gmail.com"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"pizza\":\"this is my second order of pizza\",\n  \"number\":\"8\",\n  \"unitprice\":\"10\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/customer/shopping/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"customer",
+						"shopping",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkout order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "NHT7IJ9yIgGfH6UuVJfB"
+					},
+					{
+						"key": "email",
+						"value": "yangarnet@gmail.com"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:3000/customer/shopping/checkout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"customer",
+						"shopping",
+						"checkout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

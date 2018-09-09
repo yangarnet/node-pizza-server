@@ -22,9 +22,15 @@ the format looks like the following:
     "MAINGUN_SANBOX": ""
 ```
 
-### APIs usage
+### API usage
 
-to test the APIs in postman in local host as the following, will need a valid token by logging in
+A postman collection is added as the following, just download and import into postman, start playing with the API
+
+```
+    postman_collection.json
+```
+
+To test the API in postman in local host as the following, will need a valid token by logging in
 
 -   user registration:
 
