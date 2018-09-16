@@ -1,7 +1,9 @@
-const handler = require("../handlers/index");
-const helper = require("../../utils/helper");
+const handler = require('../handlers/index');
+const helper = require('../../utils/helper');
 
 const routeConfig = {
+    // define routes here. this can be string as well: customer/register
+    '': handler.index,
     customer: {
         register: handler.customer.register,
         login: handler.customer.login,
